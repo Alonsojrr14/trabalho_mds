@@ -1,0 +1,87 @@
+.seat-booking-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.seats-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.seat {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px 8px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #bbb;
+  background: #f8f8f8;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.seat.livre {
+  background: #eaffea;
+  border-color: #7be67b;
+  color: #2b7a2b;
+}
+
+.seat.selecionado {
+  background: #ffe9b3;
+  border-color: #ffc107;
+  color: #b8860b;
+}
+
+.seat.reservado {
+  background: #ffb3b3;
+  border-color: #e53935;
+  color: #a31515;
+  cursor: not-allowed;
+}
+
+.legend {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+.legend .seat {
+  width: 22px;
+  height: 22px;
+  font-size: 0;
+  margin-right: 4px;
+  border-width: 2px;
+}
+
+.counters {
+  margin: 10px 0 20px 0;
+  font-size: 16px;
+}
+
+button {
+  padding: 8px 24px;
+  font-size: 16px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+} 

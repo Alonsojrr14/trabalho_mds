@@ -1,0 +1,29 @@
+{
+  "name": "fullstack-movie-booking-app",
+  "version": "1.0.0",
+  "description": "![front part of app](https://github.com/Akash-298/fullstack-movie-booking-app/assets/105929312/9787ee17-78b8-40e7-9b60-7126d9e1e895)\r ![Screenshot 2023-09-27 084227](https://github.com/Akash-298/fullstack-movie-booking-app/assets/105929312/5e144d98-b221-4ce8-a2ba-1b09bf61233b)",
+  "homepage": "https://github.com/Akash-298/fullstack-movie-booking-app#readme",
+  "bugs": {
+    "url": "https://github.com/Akash-298/fullstack-movie-booking-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akash-298/fullstack-movie-booking-app.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
+    "@reduxjs/toolkit": "^2.8.1",
+    "axios": "^1.9.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.6.0"
+  }
+}
