@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import "./SeatBooking.css";
 import { getBookingsByDate, newBooking } from "../../api-helpers/api-helpers";
 
@@ -10,74 +11,89 @@ const initialSeats = Array.from({ length: TOTAL_SEATS }, (_, i) => ({
   status: "livre", // outros: 'selecionado', 'reservado', 'masculino', 'feminino'
 }));
 
+// Helper function to update seats with booking data
+const updateSeatsWithBookings = (seats, bookedSeats) => {
+  return seats.map(seat => ({
+    ...seat,
+    status: bookedSeats.includes(seat.id) ? "reservado" : "livre"
+  }));
+};
+
+// Helper function to load bookings
+const loadBookings = async (movieId, selectedDate, setSeats) => {
+  try {
+    const res = await getBookingsByDate(movieId, selectedDate);
+    const bookedSeats = res.bookings.map(booking => booking.seatNumber);
+    setSeats(prev => updateSeatsWithBookings(prev, bookedSeats));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const SeatBooking = ({ movieId, selectedDate }) => {
   const [seats, setSeats] = useState(initialSeats);
   const [selectedCount, setSelectedCount] = useState(0);
 
   useEffect(() => {
     if (selectedDate && movieId) {
-      // Buscar reservas existentes para a data selecionada
-      getBookingsByDate(movieId, selectedDate)
-        .then((res) => {
-          const bookedSeats = res.bookings.map(booking => booking.seatNumber);
-          setSeats(prev => prev.map(seat => ({
-            ...seat,
-            status: bookedSeats.includes(seat.id) ? "reservado" : "livre"
-          })));
-        })
-        .catch((err) => console.log(err));
+      loadBookings(movieId, selectedDate, setSeats);
     }
   }, [selectedDate, movieId]);
 
+  // Helper function to handle seat selection logic
+  const updateSeatStatus = (seat, id, selectedCount, setSelectedCount) => {
+    if (seat.id !== id) return seat;
+    
+    if (seat.status === "livre" && selectedCount < 80) {
+      setSelectedCount(c => c + 1);
+      return { ...seat, status: "selecionado" };
+    }
+    
+    if (seat.status === "selecionado") {
+      setSelectedCount(c => c - 1);
+      return { ...seat, status: "livre" };
+    }
+    
+    return seat;
+  };
+
   const handleSeatClick = (id) => {
-    setSeats((prev) =>
-      prev.map((seat) => {
-        if (seat.id === id) {
-          if (seat.status === "livre" && selectedCount < 80) {
-            setSelectedCount((c) => c + 1);
-            return { ...seat, status: "selecionado" };
-          } else if (seat.status === "selecionado") {
-            setSelectedCount((c) => c - 1);
-            return { ...seat, status: "livre" };
-          }
-        }
-        return seat;
-      })
+    setSeats(prev => 
+      prev.map(seat => updateSeatStatus(seat, id, selectedCount, setSelectedCount))
+    );
+  };
+
+  // Helper function to save bookings
+  const saveBookings = async (selectedSeats, movieId, selectedDate) => {
+    for (const seatNumber of selectedSeats) {
+      await newBooking({
+        movie: movieId,
+        seatNumber,
+        date: selectedDate
+      });
+    }
+  };
+
+  // Helper function to mark selected seats as reserved
+  const markSeatsAsReserved = (seats) => {
+    return seats.map(seat => 
+      seat.status === "selecionado" 
+        ? { ...seat, status: "reservado" }
+        : seat
     );
   };
 
   const handleConfirm = async () => {
-    const selectedSeats = seats.filter((s) => s.status === "selecionado").map((s) => s.id);
+    const selectedSeats = seats.filter(s => s.status === "selecionado").map(s => s.id);
     
     try {
-      // Salvar cada assento selecionado
-      for (const seatNumber of selectedSeats) {
-        await newBooking({
-          movie: movieId,
-          seatNumber,
-          date: selectedDate
-        });
-      }
-
+      await saveBookings(selectedSeats, movieId, selectedDate);
       alert(`Assentos reservados com sucesso: ${selectedSeats.join(", ")}`);
       
-      // Atualizar o estado dos assentos
-      setSeats((prev) =>
-        prev.map((seat) =>
-          seat.status === "selecionado"
-            ? { ...seat, status: "reservado" }
-            : seat
-        )
-      );
+      setSeats(prev => markSeatsAsReserved(prev));
       setSelectedCount(0);
 
-      // Recarregar as reservas para a data atual
-      const res = await getBookingsByDate(movieId, selectedDate);
-      const bookedSeats = res.bookings.map(booking => booking.seatNumber);
-      setSeats(prev => prev.map(seat => ({
-        ...seat,
-        status: bookedSeats.includes(seat.id) ? "reservado" : "livre"
-      })));
+      await loadBookings(movieId, selectedDate, setSeats);
     } catch (err) {
       console.error("Erro ao reservar assentos:", err);
       alert("Erro ao realizar a reserva. Por favor, tente novamente.");
@@ -117,7 +133,6 @@ const SeatBooking = ({ movieId, selectedDate }) => {
     </div>
   );
 };
-
 
 SeatBooking.propTypes = {
   movieId: PropTypes.string.isRequired,
