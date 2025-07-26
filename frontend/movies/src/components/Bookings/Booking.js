@@ -83,8 +83,10 @@ const Booking = () => {
                     variant="standard"
                     value={inputs.date}
                     onChange={handleChange}
-                    InputLabelProps={{
-                      shrink: true,
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      },
                     }}
                   />
                   <Button type="submit" sx={{ mt: 3 }}>
