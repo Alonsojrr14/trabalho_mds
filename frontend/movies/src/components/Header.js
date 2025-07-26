@@ -13,15 +13,13 @@ import { getAllMovies } from "../api-helpers/api-helpers";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminActions, userActions } from "../store";
-// const dummyArray = ["eMemory", "Brahmastra", "OK", "PK"];
 
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const [selectedMocvie,setSelectedMovie] = useState();
-    const [movies,setMovies] = useState([])
+  const [movies, setMovies] = useState([])
     const [value, setValue] = useState(0);
     useEffect(()=>{
         getAllMovies().then((data)=>setMovies(data.movies))
@@ -34,8 +32,7 @@ const Header = () => {
 
       const handleChange = (e, val) => {
         const movie = movies.find((m) => m.title === val);
-        console.log(movie);
-        if (isUserLoggedIn) {
+        if (isUserLoggedIn && movie?._id) {
           navigate(`/booking/${movie._id}`);
         }
       };
@@ -51,7 +48,7 @@ const Header = () => {
           <Autocomplete
           onChange={handleChange}
             freeSolo
-            options={movies && movies.map((option) => option.title)}
+            options={movies?.map((option) => option.title) || []}
             renderInput={(params) => (
                 <TextField
                 variant="standard"
@@ -66,10 +63,7 @@ const Header = () => {
                 
                   placeholder="Search Movies"
                 
-                //   InputProps={{
-                //     ...params.InputProps,
-                //     type: "search",
-                //   }}
+
                 />
               )}
             />
