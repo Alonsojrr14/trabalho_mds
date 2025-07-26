@@ -110,22 +110,16 @@ const SeatBooking = ({ movieId, selectedDate }) => {
       <h2>Reserva de Assentos</h2>
       <div className="seats-grid">
         {seats.map((seat) => (
-          <div
+          <button
             key={seat.id}
+            type="button"
             className={`seat ${seat.status}`}
             onClick={() => handleSeatClick(seat.id)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleSeatClick(seat.id);
-              }
-            }}
-            role="button"
-            tabIndex={0}
             aria-label={`Assento ${seat.id.toString().padStart(2, "0")}, status: ${seat.status}`}
+            disabled={seat.status === 'reservado'}
           >
             {seat.id.toString().padStart(2, "0")}
-          </div>
+          </button>
         ))}
       </div>
       <div className="legend">
