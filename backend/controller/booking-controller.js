@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Bookings from "../models/Bookings.js";
 import Movie from "../models/Movie.js";
 import User from "../models/User.js";
@@ -6,13 +5,8 @@ import User from "../models/User.js";
 export const newBooking = async (req, res, next) => {
   const { movie, date, seatNumber, user } = req.body;
 
-  // if (!mongoose.Types.ObjectId.isValid(movie) || !mongoose.Types.ObjectId.isValid(user)) {
-  //   return res.status(400).json({ message: "Invalid movie or user ID" });
-  // }
-
   let existingMovie;
   let existingUser;
-  // let booking;
   try {
     existingMovie = await Movie.findById(movie);
     existingUser = await User.findById(user);
