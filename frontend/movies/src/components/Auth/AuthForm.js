@@ -1,7 +1,8 @@
-import { Box, Button, Dialog, FormLabel, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogProps, FormLabel, IconButton, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import PropTypes from 'prop-types';
 
 const labelStyle = { mt: 1, mb: 1 };
 const AuthForm = ({ onSubmit, isAdmin }) => {
@@ -22,7 +23,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
         onSubmit({ inputs, signup: isAdmin ? false : isSignup });
       };
       return (
-        <Dialog PaperProps={{ style: { borderRadius: 20 } }} open={true}>
+        <Dialog sx={{ '& .MuiDialog-paper': { borderRadius: '20px' } }} open={true} PaperProps={{ sx: { borderRadius: '20px' } }}>
           <Box sx={{ ml: "auto", padding: 1 }}>
             <IconButton LinkComponent={Link} to="/">
               <CloseRoundedIcon />
@@ -95,5 +96,10 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
         </Dialog>
       );
 }
+
+AuthForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+};
 
 export default AuthForm
