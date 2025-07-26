@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
 import Admin from "../models/Admin.js";
 import Movie from "../models/Movie.js";
 
