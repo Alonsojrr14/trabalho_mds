@@ -57,6 +57,7 @@ const AdminProfile = () => {
               <List>
                 {admin.addedMovies.map((movie, index) => (
                   <ListItem
+                    key={movie._id || index}
                     sx={{
                       bgcolor: "#00d386",
                       color: "white",
