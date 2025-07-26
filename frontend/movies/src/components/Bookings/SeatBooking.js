@@ -114,6 +114,15 @@ const SeatBooking = ({ movieId, selectedDate }) => {
             key={seat.id}
             className={`seat ${seat.status}`}
             onClick={() => handleSeatClick(seat.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleSeatClick(seat.id);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={`Assento ${seat.id.toString().padStart(2, "0")}, status: ${seat.status}`}
           >
             {seat.id.toString().padStart(2, "0")}
           </div>
@@ -127,7 +136,11 @@ const SeatBooking = ({ movieId, selectedDate }) => {
       <div className="counters">
         Livre: {livre} | Selecionado: {selecionado} | Reservado: {reservado}
       </div>
-      <button onClick={handleConfirm} disabled={selecionado === 0}>
+      <button 
+        onClick={handleConfirm} 
+        disabled={selecionado === 0}
+        aria-label={`Confirmar reserva de ${selecionado} assento${selecionado !== 1 ? 's' : ''}`}
+      >
         Confirmar Reserva
       </button>
     </div>
