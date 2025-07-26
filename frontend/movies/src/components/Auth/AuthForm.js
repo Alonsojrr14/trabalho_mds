@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogProps, FormLabel, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, FormLabel, IconButton, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -23,7 +23,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
         onSubmit({ inputs, signup: isAdmin ? false : isSignup });
       };
       return (
-        <Dialog sx={{ '& .MuiDialog-paper': { borderRadius: '20px' } }} open={true} PaperProps={{ sx: { borderRadius: '20px' } }}>
+        <Dialog sx={{ '& .MuiDialog-paper': { borderRadius: '20px' } }} open={true}>
           <Box sx={{ ml: "auto", padding: 1 }}>
             <IconButton LinkComponent={Link} to="/">
               <CloseRoundedIcon />
