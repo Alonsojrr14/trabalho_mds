@@ -118,4 +118,10 @@ const SeatBooking = ({ movieId, selectedDate }) => {
   );
 };
 
+
+SeatBooking.propTypes = {
+  movieId: PropTypes.string.isRequired,
+  selectedDate: PropTypes.string.isRequired,
+};
+
 export default SeatBooking; 
